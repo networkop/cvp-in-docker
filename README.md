@@ -8,7 +8,7 @@ When booting for the first time CVP initializes a lot of the processes which con
 
 1. Assuming cvp image and tools archives are in the $pwd, run
 ```bash
-docker build . -t cvp:2018.2.2-init --build-arg IMAGE=cvp-2018.2.2-kvm.tgz
+docker build . -t cvp:2018.2.2-init --build-arg IMAGE=cvp-2018.2.2-kvm.tgz  --build-arg TOOLS=cvp-tools-2018.2.2.tgz
 ```
 
 2. Run the CVP VM the first time (can take up to 15 minutes)
@@ -57,3 +57,15 @@ docker run -d --privileged -p 443:443  -p 9910:9910 --name cvp --entrypoint ./en
 > To register devices with CVP, PRIMARY_DEVICE_INTF_IP in /etc/cvpi/env should be modified to the public IP address followed by `cvpi stop cvp`, `cvpi start cvp`
 
 > `docker save|load` may require docker version > 18.09 due to https://github.com/moby/moby/issues/37581
+  
+  ```
+  wget https://download.docker.com/linux/static/stable/x86_64/docker-18.09.1.tgz
+  tar zxvf docker-18.09.1.tgz 
+  sudo find / -name docker.service
+  cat /run/torcx/unpack/docker/lib/systemd/system/docker.service
+  cat /run/metadata/torcx
+  vi /run/metadata/torcx
+  ```
+
+  and change TORCX_BINDIR ->  $(pwd)/docker followed by systemctl restart docker
+

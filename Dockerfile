@@ -8,7 +8,7 @@ RUN yum -y install epel-release && \
     yum clean all
 
 ARG IMAGE
-ARG TOOLS=cvp-tools-2018.2.2.tgz
+ARG TOOLS
 RUN mkdir -p /cvp
 ADD $IMAGE /cvp
 ADD $TOOLS /cvp
