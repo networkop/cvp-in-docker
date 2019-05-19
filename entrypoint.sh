@@ -16,6 +16,7 @@ done
 
 echo 'Setting /dev/kvm permissions'
 chown -f root:kvm /dev/kvm
+chmod 666 /dev/kvm
 
 if virsh dominfo cvp; then
   echo 'CVP VM already exists'
