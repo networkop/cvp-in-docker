@@ -1,6 +1,6 @@
 #!/bin/bash
 
-RAM=${1:-22528}
+RAM=${1:-12288}
 
 echo 'Starting libvirtd'
 /usr/sbin/libvirtd &
@@ -44,11 +44,15 @@ node1:
 EOF
 /cvp/geniso.py -y /cvp/answers.yaml -p cvpadmin -o /cvp/
 
+#echo 'Creating disk snapshots'
+#qemu-img create -f qcow2 -b /cvp/disk1.qcow2 /cvp/overlay_disk1.qcow2
+#qemu-img create -f qcow2 -b /cvp/disk2.qcow2 /cvp/overlay_disk2.qcow2
+
 echo 'Generating libvirt XML'
 /cvp/generateXmlForKvm.py -n cvp \
 --device-bridge virbr0 -i /cvp/cvpTemplate.xml -o result.xml \
--x /cvp/disk1.qcow2 -y /cvp/disk2.qcow2 -c /cvp/node1-cvp.iso \
--b $RAM -p 2 \
+-x /cvp/overlay_disk1.qcow2 -y /cvp/overlay_disk2.qcow2 \
+-c /cvp/node1-cvp.iso -b $RAM -p 2 \
 -e /usr/libexec/qemu-kvm
 
 echo 'Starting CVP VM'
